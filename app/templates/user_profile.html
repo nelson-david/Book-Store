@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block title %}O Book - {{user.username}}{% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 20px;">
+  <div class="row">
+    <div class="col-md-5">
+    	<div class="jumbotron" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+    		<img data-toggle="modal" data-target="#exampleModal2" class="responive-img img-fluid" src="/static/img/{{user.image_file}}" style="margin-top: -20px; height: 5.2rem; width: 5.4rem; border-radius: 55px; cursor: pointer; margin-bottom: -10px; box-shadow: 1px 1px 10px grey;">
+    		<br>
+    		<br>
+    		{% if user.bio %}
+    			<p id="text" style="margin-top: 7px; margin-left: 10px; white-space: pre-wrap; font-family: Arial Nova; font-weight: bold; margin-bottom: -4px;">{{user.bio}}</p>
+    		{% else %} 
+    			
+    		{% endif %}
+    		<br>
+            <div class="follow-body" style="margin-top: -7px;">
+                {% if current_user.is_following(user) %}
+                  <button class="unfollowbutton gad btn btn-primary" id="unfollowbutton" username_id="{{user.username}}" type="submit" style="padding: 10px 20px; font-size: 13px; color: black; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">Unfollow</button>
+                {% else %}
+                  <button class="followbutton gad btn btn-primary" id="followbutton" username_id="{{user.username}}" type="submit" style="padding: 10px 20px; font-size: 13px; color: black; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">Follow</button>
+                {% endif %}
+            </div>
+    		<hr>
+        <div class="user_credentials" id="cred">
+      		<p style="margin-top: 10px; font-family: 'Marcellus', serif; font-weight: bold;">username: <span>{{user.username}}</span></p>
+      		<p style="font-family: Marcellus SC; font-weight: bold;">date Joined: <span>{{user.date_joined.strftime('%d-%m-%Y')}}</span></p>
+      		<p style="font-family: Marcellus SC; font-weight: bold;">uploaded Courses: {{len(user.uploads)}}</p>
+      		<p style="font-family: Marcellus SC; font-weight: bold;">Followers: {{user.followers.count()}}</p>
+      		<p style="font-family: Marcellus SC; font-weight: bold;">Following: {{user.followed.count()}}</p>
+        </div>
+    	</div>
+    </div>
+    <div class="col-md-5">
+      <div class="jumbotron" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+        <legend style="margin-bottom: -15px; font-size: 18px; font-family: Marcellus SC; font-weight: bold;">{{user.username}}'s Uploads</legend>
+        <hr>
+        {% for uploads in user_uploads %}
+          <div class="card" style="margin-right: 10px; margin-bottom: 10px; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+            <div class="card-body">
+              <div class="title">
+                <a href="" style="font-size: 15px; font-family: Marcellus SC; font-weight: bold;">{{uploads.name}}</a>
+              </div>
+              <div class="content" style="margin-bottom: -7px; margin-top: 5px;">
+                <img src="/static/img/{{current_user.image_file}}" class="img-fluid" style="width: 27px; height: 27px; border-radius: 35px; cursor: pointer;">
+                <a href="" class="card-text" style="color: black; font-size: 13px; margin-top: 30px; margin-left: 2px;">{{uploads.author.username}}</a>
+                {% if current_user.is_wishlisting(uploads) %}
+                  <button type="submit" class="unlikebutton bod float-right" id="unlikebutton" post_id="{{uploads.id}}" username_id="{{uploads.author.username}}" style="background: transparent; box-shadow: none; outline: 0px !important; color: transparent; -webkit-animation: none; border: none;">
+                    <span class="fa fa-bookmark float-right" style="margin-top: 7px; margin-bottom: -4px; cursor: pointer; color: black; font-size: 18px; margin-top: 6px;"></span></svg>
+                  </button>
+                {% else %}
+                  <button class="likebutton bod float-right" id="likebutton" post_id="{{uploads.id}}" username_id="{{uploads.author.username}}" type="submit" style="background: transparent; box-shadow: none; outline: 0px !important; color: transparent; -webkit-animation: none; border: none;">
+                    <span class="fa fa-bookmark-o float-right" style="margin-top: 7px; color: black; margin-bottom: -4px; cursor: pointer; font-size: 18px; margin-top: 6px;"></span>
+                  </button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+
+	<style>
+		.form-control-sm{
+			visibility: hidden;
+		}
+    .btn{
+      box-shadow: 0px 0px 0px;
+      border-radius: 4px;
+      margin-bottom: -5px;
+    }
+    .btn:hover{
+      box-shadow: 0px 0px 0px;
+      border-radius: 4px;
+    }
+    .btn:focus{
+      box-shadow: 0px 0px 0px;
+      border-radius: 4px;
+    }
+	</style>
+</div>
+<style>
+	.form-control:focus{
+		-webkit-appearance: none;
+		outline: 0px !important;
+		box-shadow: none;
+		border-color: #bebebd;
+	}
+	.ollo{
+		font-size: 12px;
+	}
+	.ollo:focus{
+		-webkit-appearance: none;
+		outline: 0px !important;
+		box-shadow: none;
+		border-color: #bebebd;
+	}
+	.t-area{
+		resize: none;
+	}
+</style>
+<div class="row">
+  <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+    <div class="modal-dialog" role="document" style="border-radius: 0px;">
+      <div class="modal-content" style="border-radius: 0px; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+        <div class="modal-header">
+          <h5 class="modal-title" style="font-size: 15px; margin-bottom: -17px !important;">{{user.username}}</h5>
+        </div>
+        <div class="modal-body" style="margin-top: 14px;">
+        	<div class="card">
+            	<img class="card-img-top" src="/static/img/{{ user.image_file }}" alt="..." style="margin-bottom: 1px; cursor: pointer; border-radius: 1px; margin-top: -20px !important;">
+            </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $(".gad").on("click", function(){
+      var state = $(this).hasClass("followbutton");
+      var username = $(this).attr("username_id")
+
+      if (state == true){
+        var me = $(this);
+
+
+        me.attr("class", "unfollowbutton gad btn btn-primary");
+        me.html("Following");
+
+        req = $.ajax({
+          url : '/follow',
+          type : 'POST',
+          data : {username : username},
+          success : function(){
+            $("#body").load(location.href + "#cred");
+          }
+        });
+      }else{
+        var me = $(this);
+
+
+        me.attr("class", "followbutton gad btn btn-primary");
+        me.html("Follow");
+
+        req = $.ajax({
+          url : '/unfollow',
+          type : 'POST',
+          data : {username : username},
+          success : function(){
+            $("#body").load(location.href + "#cred");
+          }
+        });        
+      }
+    });
+
+    $('.bod').on('click', function(){
+      var state = $(this).hasClass("likebutton");
+      var id1 = $(this).attr('post_id');
+
+      if (state == true){
+        var me = $(this);
+
+        me.attr("class", "unlikebutton bod float-right");
+        me.find("span").attr("class", "fa fa-bookmark float-right");
+
+        req = $.ajax({
+          url : '/bookmark',
+          type : 'POST',
+          data : {id1 : id1},
+          success : function(){
+
+          }
+        });
+      }else{
+        var me = $(this);
+
+        me.attr("class", "likebutton bod float-right");
+        me.find("span").attr("class", "fa fa-bookmark-o float-right");
+
+        req = $.ajax({
+          url : '/unbookmark',
+          type : 'POST',
+          data : {id1 : id1},
+          success : function(){
+
+          }
+        });   
+      }
+    });
+  });
+</script>
+{% endblock %}

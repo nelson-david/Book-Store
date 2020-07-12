@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">	
+		</div>
+		<div class="col-md-4">
+			<div class="jumbotron" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+					{% with messages = get_flashed_messages(with_categories=true) %}
+						{% if messages %}
+							{% for category, message in messages %}
+								<div class="alert alert-{{category}}" style="font-family: Verdana; font-size: 12px; box-shadow: 3px 30px 30px transparent; color: black;">
+									{{ message }}
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
+				<form method="POST">
+					{{form.hidden_tag()}}
+					<legend style="margin-bottom: -15px; font-size: 15px; text-transform: uppercase;">Login</legend>
+					<hr>
+					<div class="form-group">
+						{{form.login_email(class="form-control")}}
+					</div>
+					<div class="form-group">
+						{{form.password(class="form-control")}}
+					</div>
+					{{form.remember_me()}}
+					{{form.remember_me.label(class="me")}}
+					<br>
+					<button type="submit" class="btn" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important; color: black;">Login</button>
+					<p class="card-text" style="margin-top: 5px; font-size: 14px; margin-left: 4px;">Don't have an account? <a href="{{url_for('register')}}">sign up</a></p>
+					<p style="margin-top: -20px !important; margin-left: 5px !important;"><a href="{{url_for('reset_request')}}" style="font-size: 15px !important; text-transform: lowercase; margin-top: -10px !important">Forgotten Password?</a></p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.me{
+		font-size: 12px !important;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+	.container{
+		margin-top: 60px;
+	}
+	.form-control{
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		box-shadow: -6px -6px -12px #b8b9be, 6px 6px 12px #ffffff !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+	}
+	.form-control:focus{
+		-webkit-appearance: none;
+		outline: 0px !important;
+		box-shadow: none !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+	}
+	.btn{
+		padding: 7px 20px;
+	}
+	.form-control::placeholder{
+		text-transform: uppercase !important;
+		font-size: 12px !important;
+	}
+</style>
+{% endblock %}

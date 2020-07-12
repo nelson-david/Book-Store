@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-5">
+			<div class="jumbotron" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+				<legend style="margin-bottom: -15px; font-size: 16px;">Your Uploads</legend>
+				<hr>
+				{% for uploads in user_uploads %}
+					<div class="card" style="margin-right: 10px; margin-bottom: 10px; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+						<div class="card-body">
+							<div class="title">
+								<a href="" style="font-size: 15px; font-family: Marcellus SC; font-weight: bold;">{{uploads.name}}</a>
+							</div>
+							<div class="content" style="margin-bottom: -7px; margin-top: 5px;">
+								<img src="/static/img/{{current_user.image_file}}" class="img-fluid" style="width: 27px; height: 27px; border-radius: 35px; cursor: pointer;">
+								<a href="" class="card-text" style="color: black; font-size: 13px; margin-top: 30px; margin-left: 2px;">{{uploads.author.username}}</a>
+				                {% if current_user.is_wishlisting(uploads) %}
+				                    <button type="submit" class="unlikebutton gad float-right" id="unlikebutton" post_id="{{uploads.id}}" username_id="{{uploads.author.username}}" style="background: transparent; box-shadow: none; outline: 0px !important; color: transparent; -webkit-animation: none; border: none;">
+				                      <span class="fa fa-heart float-right" style="margin-top: 7px; margin-bottom: -4px; cursor: pointer; color: black; font-size: 18px; margin-top: 6px;"></span></svg>
+				                    </button>
+				                {% else %}
+				                    <button class="likebutton gad float-right" id="likebutton" post_id="{{uploads.id}}" username_id="{{uploads.author.username}}" type="submit" style="background: transparent; box-shadow: none; outline: 0px !important; color: transparent; -webkit-animation: none; border: none;">
+				                     	<span class="fa fa-heart-o float-right" style="margin-top: 7px; color: black; margin-bottom: -4px; cursor: pointer; font-size: 18px; margin-top: 6px;"></span>
+				                    </button>
+				                {% endif %}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="col-md-5">
+			<div class="jumbotron" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+				<form method="POST" enctype="multipart/form-data" id="upload_form">
+					{{form.hidden_tag()}}
+					<legend style="margin-bottom: -15px; font-size: 16px;">Upload</legend>
+					<hr>
+					<div class="form-group">
+						{% if form.name.errors %}
+							{{ form.name(class="form-control is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.name.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.name(class="form-control") }}
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{% if form.description.errors %}
+							{{ form.description(class="form-control is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.description.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.description(class="form-control t-area") }}
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{% if form.book.errors %}
+							{{ form.book(class="is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.book.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.book(class="image") }}
+						{% endif %}
+						<label id="label_book" for="pdf" class="btn" style="padding: 8px 40px !important; margin-top: -1px !important; text-align: left !important;">Select Book File : </label>
+					</div>
+					<br>
+					<button type="submit" class="btn float-right post">Upload</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	#label_book{
+		box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+	}
+	.post{
+		box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;	
+	}
+	.container{
+		margin-top: 60px;
+	}
+	.form-control:focus, .image:focus{
+		-webkit-appearance: none;
+		outline: 0px !important;
+		box-shadow: none;
+	}
+	.form-control::placeholder{
+		font-size: 14px;
+	}
+	.form-control{
+		font-size: 14px;
+		box-shadow: -6px -6px -12px #b8b9be, -6px -6px 12px #ffffff !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+	}
+	.post{
+		padding: 10px 20px !important;
+		font-size: 14px !important;
+		box-shadow: -6px -6px -12px #b8b9be, -6px -6px 12px #ffffff !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+	}
+	.t-area{
+		resize: none;
+	}
+	.image{
+		font-size: 13px;
+		font-weight: bold;
+		text-transform: lowercase;
+		font-family: Marcellus SC;
+	}
+	.lb{
+		font-family: Marcellus SC;
+	}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+  	$("#pdf").on("change", function(){
+  		var me = $(this)[0].files[0]
+  		$("#label_book").html("Selected File: " + me.name);
+  	});
+
+  	$("#upload_form").on("submit", function(e){
+  		e.preventDefault();
+
+  		var form_data = new FormData();
+      	var description = document.getElementById("desc").value;
+      	var name = document.getElementById("name").value;
+
+      	form_data.append('file', $("#pdf").prop('files')[0]);
+
+		req = $.ajax({
+	        url : '/upload_book/' + name + '/' + description + '/',
+	        type : 'POST',
+	        data : form_data,
+	        contentType : false,
+	        cache : false,
+	        processData : false,
+	        success : function(){
+	          $("#body").load(location.href + "#body");
+	        }
+	    });
+  	});
+
+    $('.gad').on('click', function(){
+    	var state = $(this).hasClass("likebutton");
+    	var id1 = $(this).attr('post_id');
+
+    	if (state == true){
+    		var me = $(this);
+
+    		me.attr("class", "unlikebutton gad float-right");
+    		me.find("span").attr("class", "fa fa-heart float-right");
+
+    		req = $.ajax({
+    			url : '/bookmark',
+    			type : 'POST',
+    			data : {id1 : id1},
+    			success : function(){
+
+    			}
+    		});
+    	}else{
+    		var me = $(this);
+
+    		me.attr("class", "likebutton gad float-right");
+    		me.find("span").attr("class", "fa fa-heart-o float-right");
+
+    		req = $.ajax({
+    			url : '/unbookmark',
+    			type : 'POST',
+    			data : {id1 : id1},
+    			success : function(){
+
+    			}
+    		});		
+    	}
+    });
+  });
+</script>
+{% endblock %}

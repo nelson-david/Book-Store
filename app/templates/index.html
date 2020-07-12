@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container-fluid">
+	<br>
+	<div class="row d-flex justify-content-center">
+		<div class="col-md-10 d-flex justify-content-center">
+			<form method="POST" class="form-inline">
+				{{form.hidden_tag()}}
+				<div class="form-group">
+					{{form.content(class="form-control")}}
+				</div>
+				<button class="btn btn-secondary float-right" style="padding: 9px 11px; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important; color: black !important;">search <span class="fa fa-search" style="margin-left: 5px;"></span></button>
+			</form>
+		</div>
+	</div>
+</div>
+<br>
+<div class="jumbotron" style="background: url('/static/img/{{current_user.image_file}}') no-repeat; background-size: contain; background-position: center; height: 400px; cursor: pointer; background-repeat: no-repeat; background-color: black !important;">
+</div>
+<div class="container-fluid" style="margin-top: -12px;">
+	<div class="row d-flex justify-content-center">
+		{% for uploads in all_uploads %}
+			<div class="col-md-3" style="margin-bottom: 15px; margin-left: 10px;">
+				<div class="card" style="margin-right: 10px; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+					<div class="card-body">
+						<div class="head" style="margin-top: -9px; margin-bottom: -5px;">
+							<a class="float-right" style="font-size: 12px;">{{uploads.date_posted.strftime('%d/%m/%Y')}}</a>
+							<br>
+						</div>
+						<div class="title">
+							<a href="" style="font-size: 14px;">{{uploads.name}}</a>
+						</div>
+						<div class="content" style="margin-bottom: -7px; margin-top: 5px;">
+							<img src="/static/img/{{uploads.author.image_file}}" class="img-fluid" style="width: 27px; height: 27px; border-radius: 35px; cursor: pointer; box-shadow: 0px 0px 8px #cacaca;">
+							<a href="{{url_for('others_profile', name=uploads.author.username)}}" class="card-text" style="color: black; font-size: 13px; margin-top: 30px; margin-left: 3px;">{{uploads.author.username}}</a>
+							<a download href="/static/img/{{uploads.book}}" class="fa fa-download float-right" style="margin-top: 7px; margin-left: 4px; margin-bottom: -4px; cursor: pointer; font-size: 19px;"></a>
+
+			                {% if current_user.is_wishlisting(uploads) %}
+			                    <button type="submit" class="unlikebutton gad float-right" id="unlikebutton" post_id="{{uploads.id}}" username_id="{{uploads.author.username}}" style="background: transparent; box-shadow: none; outline: 0px !important; color: transparent; -webkit-animation: none; border: none;">
+			                      <span class="fa fa-heart float-right" style="margin-top: 7px; margin-bottom: -4px; cursor: pointer; color: black; font-size: 18px; margin-top: 6px;"></span></svg>
+			                    </button>
+			                {% else %}
+			                    <button class="likebutton gad float-right" id="likebutton" post_id="{{uploads.id}}" username_id="{{uploads.author.username}}" type="submit" style="background: transparent; box-shadow: none; outline: 0px !important; color: transparent; -webkit-animation: none; border: none;">
+			                     	<span class="fa fa-heart-o float-right" style="margin-top: 7px; color: black; margin-bottom: -4px; cursor: pointer; font-size: 18px; margin-top: 6px;"></span>
+			                    </button>
+			                {% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+<style>
+	@media (max-width: 575px){
+		.btn{
+			margin-top: -11px;
+		}
+	}
+	.form-control{
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		font-size: 13px;
+		font-size: 13px;
+		box-shadow: -6px -6px -12px #b8b9be, -6px -6px 12px #ffffff !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+	}
+	.form-control:focus{
+		-webkit-appearance: none;
+		outline: 0px !important;
+		box-shadow: none;
+	}
+	.form-control::placeholder{
+		font-size: 13px;
+		text-transform: uppercase !important;
+	}
+	.btn{
+		font-size: 12px;
+		color: black;
+	}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('.gad').on('click', function(){
+    	var state = $(this).hasClass("likebutton");
+    	var id1 = $(this).attr('post_id');
+
+    	if (state == true){
+    		var me = $(this);
+
+    		me.attr("class", "unlikebutton gad float-right");
+    		me.find("span").attr("class", "fa fa-heart float-right");
+
+    		req = $.ajax({
+    			url : '/bookmark',
+    			type : 'POST',
+    			data : {id1 : id1},
+    			success : function(){
+
+    			}
+    		});
+    	}else{
+    		var me = $(this);
+
+    		me.attr("class", "likebutton gad float-right");
+    		me.find("span").attr("class", "fa fa-heart-o float-right");
+
+    		req = $.ajax({
+    			url : '/unbookmark',
+    			type : 'POST',
+    			data : {id1 : id1},
+    			success : function(){
+
+    			}
+    		});		
+    	}
+    });
+  });
+</script>
+{% endblock %}

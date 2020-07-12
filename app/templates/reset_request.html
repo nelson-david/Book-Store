@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">	
+		</div>
+		<div class="col-md-4">
+			<div class="jumbotron" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+					{% with messages = get_flashed_messages(with_categories=true) %}
+						{% if messages %}
+							{% for category, message in messages %}
+								<div class="alert alert-{{category}}" style="font-family: Verdana; font-size: 12px; box-shadow: 3px 30px 30px transparent; color: black;">
+									{{ message }}
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
+				<form method="POST">
+					{{form.hidden_tag()}}
+					<legend style="margin-bottom: -15px; font-size: 13px; text-transform: uppercase;">Forgotten Password</legend>
+					<hr>
+                    <div class="form-group">
+                        {% if form.email.errors %}
+                          {{ form.email(class="form-control is-invalid") }}
+                          <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                              <span>{{ error }}</span>
+                            {% endfor %}
+                          </div>
+                        {% else %}
+                          {{ form.email(class="form-control") }}
+                        {% endif %}
+                    </div>
+					<button type="submit" class="btn float-right" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important; color: black;">Continue</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.me{
+		font-size: 12px !important;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+	.container{
+		margin-top: 60px;
+	}
+	.form-control{
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		box-shadow: -6px -6px -12px #b8b9be, 6px 6px 12px #ffffff !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+		font-size: 13px !important;
+	}
+	.form-control:focus{
+		-webkit-appearance: none;
+		outline: 0px !important;
+		box-shadow: none !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+	}
+	.form-control::placeholder{
+		text-transform: uppercase !important;
+		font-size: 12px !important;
+	}
+	.btn{
+		padding: 7px 20px;
+	}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script>
+	$("#loading_animation").bind({
+	    ajaxStart: function() { $(this).show(); },
+	    ajaxStop: function() { $(this).hide(); }
+	});
+</script>
+{% endblock %}

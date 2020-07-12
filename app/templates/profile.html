@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block title %}O Book - Profile{% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 20px;">
+	<div class="jumbotron" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+
+		<div class="profile_img ratio img-responsive img-circle" style="background: url('/static/img/{{current_user.image_file}}') no-repeat; background-size: contain; background-position: center; cursor: pointer; background-repeat: no-repeat; background-color: black !important;" id="profile_picture" data-toggle="modal" data-target="#exampleModal2"></div>
+		<br>
+		<br>
+		{% if current_user.bio %}
+			<p id="text" style="margin-top: 7px; margin-left: 10px; white-space: pre-wrap; font-family: Arial Nova; font-weight: bold; margin-bottom: -10px;">{{current_user.bio}}</p>
+		{% else %} 
+			<p id="text" style="margin-top: 7px; margin-left: 10px; white-space: pre-wrap; font-family: Arial Nova; font-weight: bold; margin-bottom: -10px;">Add a Little About Yourself</p>
+		{% endif %}
+		<hr>
+		<p style="margin-top: 10px; font-family: Marcellus SC; font-weight: bold;">username: <span>{{current_user.username}}</span></p>
+		<p style="font-family: Marcellus SC; font-weight: bold;">date Joined: <span>{{current_user.date_joined.strftime('%d-%m-%Y')}}</span></p>
+		<p style="font-family: Marcellus SC; font-weight: bold;">uploaded Courses: {{len(current_user.uploads)}}</p>
+		<p style="font-family: Marcellus SC; font-weight: bold;">Followers: {{len(current_user.uploads)}}</p>
+		<p style="font-family: Marcellus SC; font-weight: bold;">Following: {{len(current_user.uploads)}}</p>
+		<a data-toggle="modal" data-target="#myModal" class="btn" style="color: black; font-size: 14px; margin-left: -5px; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><span class="fa fa-pencil" style="margin-right: 5px;"></span>Edit Your Profile</a>
+	</div>
+	<style>
+		.form-control-sm{
+			visibility: hidden;
+		}
+	</style>
+</div>
+<style>
+	.img-circle{
+		border-radius: 50%;
+	}
+	.ratio{
+	    position: relative;
+	    cursor: pointer;
+	}
+	.img-responsive{
+		vertical-align: middle !important;
+		background-size: cover !important;
+		background-position: center center !important;
+		display: block;
+		position: relative;
+		height: auto;
+		width: 120px;
+		height: 120px;
+		margin-bottom: -35px !important;
+	}
+	.form-control:focus{
+		-webkit-appearance: none;
+		outline: 0px !important;
+		box-shadow: none;
+		border-color: #bebebd;
+	}
+	.ollo{
+		font-size: 12px;
+	}
+	.ollo:focus{
+		-webkit-appearance: none;
+		outline: 0px !important;
+		box-shadow: none;
+		border-color: #bebebd;
+	}
+	.t-area{
+		resize: none;
+	}
+</style>
+<div id="myModal" class="modal fade" role="dialog" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important; margin-top: -20px !important;">
+	<div class="modal-dialog modal-dialog-centered" style="">
+		<div class="modal-content" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+			<div class="modal-footer d-flex justify-content-center">
+				<form method="POST" action="">
+					{% with messages = get_flashed_messages(with_categories=true) %}
+						{% if messages %}
+							{% for category, message in messages %}
+								<div class="alert alert-{{category}}" style="font-family: Verdana; font-size: 12px; box-shadow: 3px 30px 30px transparent; color: black;">
+											{{ message }}
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
+					{{form.hidden_tag()}}
+					<legend style="font-size: 23px; font-family: 'Lato', sans-serif;">Edit Your Profile</legend>
+					<div class="form-group">
+						{% if form.name.errors %}
+							{{ form.name(class="form-control is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.name.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.name(class="form-control") }}
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{% if form.email.errors %}
+							{{ form.email(class="form-control is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.email.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.email(class="form-control") }}
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{% if form.bio.errors %}
+							{{ form.bio(class="form-control is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.bio.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+						{% else %}
+							{{ form.bio(class="form-control t-area") }}
+						{% endif %}
+					</div>
+					<button type="submit" class="btn btn-info" style="padding: 6px 15px; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important; color: black;">Save <span class="fa fa-save"></span></button>
+					<button type="button" data-dismiss="modal"  class="btn btn-info float-right" style="padding: 6px 15px;  box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important; color: black;">Close</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+  <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+    <div class="modal-dialog" role="document" style="border-radius: 0px;">
+      <div class="modal-content" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+        <div class="modal-header">
+          <h5 class="modal-title" style="font-size: 15px;">Profile Photo</h5>
+        </div>
+        <div class="modal-body" style="margin-top: 14px;">
+        	<div class="card">
+            	<img class="card-img-top" src="/static/img/{{ current_user.image_file }}" alt="..." style="margin-bottom: 1px; cursor: pointer; border-radius: 1px; margin-top: -20px !important;">
+            </div>
+	          <form method="POST" class="inline" enctype="multipart/form-data">
+	            {{form1.hidden_tag()}}
+	              <br>
+	              {% if form1.picture.errors %}
+	                {{ form1.picture(class="form-control is-invalid") }}
+	                <div class="invalid-feedback">
+	                  {% for error in form1.picture.errors %}
+	                    <span>{{ error }}</span>
+	                  {% endfor %}
+	                </div>
+	              {% else %}
+	                {{ form1.picture(class="ollo") }}
+	              {% endif %}
+	            <button type="submit" class="btn btn-primary" style="font-size: 12px; border-radius: 4px; box-shadow: none; border: 0px; padding: 5px 15px; cursor: pointer">save</button>
+	          </form>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.js"></script>
+{% endblock %}

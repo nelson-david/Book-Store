@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">	
+		</div>
+		<div class="col-md-4">
+			<div class="jumbotron" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+					{% with messages = get_flashed_messages(with_categories=true) %}
+						{% if messages %}
+							{% for category, message in messages %}
+								<div class="alert alert-{{category}}" style="font-family: Verdana; font-size: 12px; box-shadow: 3px 30px 30px transparent; color: black;">
+											{{ message }}
+								</div>
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
+				<form method="POST">
+					{{form.hidden_tag()}}
+					<legend style="margin-bottom: -15px; font-size: 15px; text-transform: uppercase;">Register</legend>
+					<hr>
+					<div class="form-group">
+						{{form.register_username(class="form-control")}}
+					</div>
+					<div class="form-group">
+						{{form.register_email(class="form-control")}}
+					</div>
+					<div class="form-group">
+						{{form.password(class="form-control")}}
+					</div>
+					<div class="form-group">
+						{{form.confirm_password(class="form-control")}}
+					</div>
+					<button type="submit" class="btn" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">Register</button>
+					<p class="card-text" style="margin-top: 5px; font-size: 14px; margin-left: 4px;">Already have an account? <a href="{{url_for('login')}}">sign in</a></p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.container{
+		margin-top: 60px;
+	}
+	.form-control{
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		box-shadow: -6px -6px -12px #b8b9be, 6px 6px 12px #ffffff !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+		font-size: 14px;
+	}
+	.form-control:focus{
+		-webkit-appearance: none;
+		outline: 0px !important;
+		box-shadow: none !important; 
+		background-color: #e6e7ee !important; 
+		border-color: #D1D9E6 !important;
+	}
+	.form-control::placeholder{
+		font-size: 14px;
+		text-transform: lowercase;
+	}
+	.btn{
+		padding: 7px 15px;
+	}
+</style>
+{% endblock %}
