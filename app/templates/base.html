@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en-US" id="loading_animation">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.18.0/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fondamento:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC:wght@300&display=swap" rel="stylesheet">
+
+    <title>{% block title %} Your nonstop bookstore, get the best books for free{% endblock %}</title>
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+      <div class="top-content">
+        <a class="navbar-brand" href="{{ url_for('home') }}" style="font-size: 17px; color: black; text-transform: uppercase;">O Book</a>
+      </div>
+      <button class="navbar-toggler" type="button" style="font-size: 12px;"><i class="fa fa-navicon" style="font-size: 15px; color: black;"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        {% if current_user.is_authenticated %}
+          <ul class="navbar-nav ml-auto" style="text-transform: uppercase;">
+            <li class="nav-item">
+              <a class="nav-link" href="/" style="font-size: 13px; font-family: 'Fondamento', cursive; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><i class="fa fa-home" style="margin-right: 5px; font-size: 16px;"></i>home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('upload')}}" style="font-size: 13px; font-family: 'Fondamento', cursive; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><i class="fa fa-upload" style="margin-right: 5px; font-size: 16px;"></i>uploads</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('yourwishlist')}}" style="font-size: 13px; font-family: 'Fondamento', cursive; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><i class="fa fa-bookmark" style="margin-right: 5px; font-size: 14px;"></i>wishlist</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ml-auto" style="text-transform: uppercase;">
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('profile', name=current_user.username)}}" style="font-size: 13px; font-family: 'Fondamento', cursive; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><i class="fa fa-user-circle" style="margin-right: 5px; font-size: 14px;"></i>profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="modal" data-target="#myModal1" style="font-size: 13px; font-family: 'Fondamento', cursive; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><i class="fa fa-sign-out" style="margin-right: 5px; font-size: 14px;"></i>logout</a>
+            </li>
+          </ul>
+        {% else %}
+          <ul class="navbar-nav ml-auto" style="text-transform: uppercase;">
+            <li class="nav-item">
+              <a class="nav-link" href="/" style="font-size: 13px; font-family: 'Fondamento', cursive; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><i class="fa fa-home" style="margin-right: 5px; font-size: 14px;"></i>Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="" style="font-size: 13px; font-family: 'Fondamento', cursive; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><i class="fa fa-blog" style="margin-right: 5px; font-size: 14px;"></i>blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('login')}}" style="font-size: 13px; font-family: 'Fondamento', cursive; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><i class="fa fa-sign-in" style="margin-right: 5px; font-size: 14px;"></i>login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('register')}}" style="font-size: 13px; font-family: 'Fondamento', cursive; box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;"><i class="fa fa-sign-in" style="margin-right: 5px; font-size: 14px;"></i>register</a>
+            </li>
+          </ul>
+        {% endif %}
+      </div>
+    </nav>
+    <br>
+    <br>
+    <style>
+      nav{
+          display: inline-block;
+          font-weight: 400;
+          color: #44476A;
+          text-align: center;
+          vertical-align: middle;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          background-color: #e6e7ee;
+          border: 0.0625rem solid transparent;
+          padding: 0.55rem 0.95rem;
+          font-size: 1rem;
+          line-height: 1.5;
+          transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      }
+      footer{
+        -webkit-user-select: none;
+        -moz-user-select: none;     
+      }
+    </style>
+{% endblock %}
+  </head>
+  <body id="body" style="background: #e6e7ee !important;">
+    {% block body %}
+      
+    {% endblock %}
+    <div id="myModal1" class="modal fade" role="dialog" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+      <div class="modal-dialog" style="margin-top: 100px !important;">
+        <div class="modal-content" style="box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #ffffff !important; background-color: #e6e7ee !important; border-color: #D1D9E6 !important;">
+          <div class="modal-header d-flex justify-content-center">
+            <p style="margin-bottom: -10px !important; text-transform: uppercase !important; font-size: 14px !important">Are you sure you want to logout</p>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <a href="{{url_for('logout')}}" class="btn btn-danger float-left" style="color: white !important; font-size: 17px !important;">Yes</a>
+            <a class="btn btn-primary float-right" data-dismiss='modal' style="color: white !important; font-size: 17px !important;">No</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <style>
+      .btn-danger{
+        color: black !important;
+      }
+      .nav-item{
+        font-family: 'Fondamento', cursive;
+        margin-right: 7px !important;
+      }
+      .nav-link{
+        display: inline-block;
+        font-weight: 400;
+        color: #44476A;
+        text-align: center;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: transparent;
+        border: 0.0625rem solid transparent;
+        padding: 0.55rem 0.95rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 5px !important;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        text-decoration: none !important;
+        cursor: pointer !important;
+      }
+      .nav-link:hover {
+          color: #31344b;
+          background-color: #cfd1df;
+          border-color: #c8cad9;
+          transition: color 0.15s ease-in-out, background-color 30s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      }
+      .nav-link:focus, .nav-link.focus {
+          outline: 0;
+          box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #FFFFFF;
+      }
+
+      .nav-link.disabled, .nav-link:disabled {
+          opacity: 0.65;
+          box-shadow: none;
+      }
+
+      .nav-link:not(:disabled):not(.disabled):active, .nav-link:not(:disabled):not(.disabled).active {
+          box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #FFFFFF;
+      }
+
+      .nav-link:not(:disabled):not(.disabled):active:focus, .nav-link:not(:disabled):not(.disabled).active:focus {
+          box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #FFFFFF, inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #FFFFFF;
+      }
+      @media (max-width: 575px){
+        .nav-item{
+          margin-bottom: 17px !important;
+        }
+      }
+    </style>
+    <footer class="page-footer text-center font-small darken-2 mt-4 wow fadeIn " style="background: #dcdcdc; margin-top: 40px;">
+
+      <!--Call to action-->
+      <div class="pt-4">
+
+      </div>
+      <!--/.Call to action-->
+
+      <hr class="my-4">
+
+      <!-- Social icons -->
+      <div class="pb-4">
+        <a href="" class="float-left" style="color: black; font-size: 15px; text-decoration: underline; margin-left: 10px;">
+          <span>About</span>
+        </a>
+        <br>
+        <br>
+        <a href="" class="float-left" style="color: black; font-size: 15px; text-decoration: underline; margin-left: 10px;">
+          <span>Guidelines</span>
+        </a>
+        <br>
+        <br>
+        <a href="" class="float-left" style="color: black; font-size: 15px; text-decoration: underline; margin-left: 10px;">
+          <span>Policy</span>
+        </a>
+        <br>
+        <br>
+        <a href="" class="float-left" style="color: black; font-size: 15px; text-decoration: underline; margin-left: 10px;">
+          <span>Terms and Conditions</span>
+        </a>
+        <br>
+        <br>
+        <a href="" target="_blank">
+          <i class="fa fa-facebook-f mr-3" style="color: black;"></i>
+        </a>
+
+        <a href="" target="_blank">
+          <i class="fa fa-twitter mr-3" style="color: black;"></i>
+        </a>
+
+        <a href="" target="_blank">
+          <i class="fa fa-youtube mr-3" style="color: black;"></i>
+        </a>
+
+        <a href="" target="_blank">
+          <i class="fa fa-google-plus mr-3" style="color: black;"></i>
+        </a>
+
+        <a href="" target="_blank">
+          <i class="fa fa-github mr-3" style="color: black;"></i>
+        </a>
+
+        <a href="" target="_blank">
+          <i class="fa fa-instagram mr-3" style="color: black;"></i>
+        </a>
+
+        <a href="" target="_blank">
+          <i class="fa fa-twitch mr-3" style="color: black;"></i>
+        </a>
+
+      </div>
+      <!-- Social icons -->
+
+      <!--Copyright-->
+      <style>
+        body{
+          -webkit-user-select: none !important;
+          -moz-user-select: none !important;
+        }
+        .oq{
+          color: black;
+        }
+        .od:hover{
+          box-shadow: 1px 10px 15px #232323;
+        }
+        #map {
+          height: 400px;  /* The height is 400 pixels */
+          width: 100%;  /* The width is the width of the web page */
+         }
+      </style>
+      <div class="footer-copyright py-3 oq" style="color: #232323;">
+        © 2020 Copyright
+
+        <a class="oq" href="" target="_blank" style="color: #232323; text-decoration: underline; cursor: pointer;"> bookman.com from larva technologies </a><br>
+      </div>
+      <!--/.Copyright-->
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <script>
+      $(".navbar-toggler").on("click", function(){
+        $("#navbarNav").toggle(400);
+      });
+    </script>
+  </body>
+</html>
